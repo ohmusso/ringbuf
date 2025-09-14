@@ -14,9 +14,9 @@ typedef struct
 
 extern RingBuf ringBuf;
 
-extern void v_RingBuf_init();
-extern size_t v_RingBuf_push(uint8_t *data, size_t len);
-extern size_t v_RingBuf_pop(uint8_t *data, size_t len);
-extern size_t v_RingBuf_getSpace();
+extern void vRingBufInit();
+extern size_t uxRingBufPush(uint8_t *data, size_t len);
+extern size_t uxRingBufPop(uint8_t *data, size_t len);
+extern size_t uxRingBufGetSpace();
 
 #endif /* RINGBUF_H */

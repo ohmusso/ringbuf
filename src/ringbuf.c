@@ -2,7 +2,7 @@
 
 RingBuf ringBuf;
 
-void v_RingBuf_init(void)
+void vRingBufInit(void)
 {
     size_t i;
     for (i = 0; i < RING_BUF_SIZE; i++)
@@ -14,7 +14,7 @@ void v_RingBuf_init(void)
     ringBuf.amount = 0;
 }
 
-size_t v_RingBuf_push(uint8_t *data, size_t len)
+size_t uxRingBufPush(uint8_t *data, size_t len)
 {
     size_t space;
     size_t i;
@@ -78,7 +78,7 @@ size_t v_RingBuf_push(uint8_t *data, size_t len)
     return len;
 }
 
-size_t v_RingBuf_pop(uint8_t *data, size_t len)
+size_t uxRingBufPop(uint8_t *data, size_t len)
 {
     size_t i;
     size_t wPos = ringBuf.wPos;
@@ -134,7 +134,7 @@ size_t v_RingBuf_pop(uint8_t *data, size_t len)
     return len;
 }
 
-size_t v_RingBuf_getSpace(void)
+size_t uxRingBufGetSpace(void)
 {
     return RING_BUF_SIZE - ringBuf.amount;
 }
