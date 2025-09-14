@@ -33,49 +33,31 @@ size_t v_RingBuf_push(uint8_t *data, size_t len)
 
     space = RING_BUF_SIZE - ringBuf.amount;
 
-    if (wPos >= rPos)
+    if (len > space)
     {
-        if (len > space)
+        return 0;
+    }
+
+    if ((wPos + len) > RING_BUF_SIZE)
+    {
+        i = 0;
+        while (wPos < RING_BUF_SIZE)
         {
-            return 0;
+            ringBuf.buf[wPos] = data[i];
+            i++;
+            wPos++;
         }
 
-        if ((wPos + len) > RING_BUF_SIZE)
+        wPos = 0;
+        while (i < len)
         {
-            i = 0;
-            while (wPos < RING_BUF_SIZE)
-            {
-                ringBuf.buf[wPos] = data[i];
-                i++;
-                wPos++;
-            }
-
-            wPos = 0;
-            while (i < len)
-            {
-                ringBuf.buf[wPos] = data[i];
-                i++;
-                wPos++;
-            }
-        }
-        else
-        {
-            i = 0;
-            while (i < len)
-            {
-                ringBuf.buf[wPos] = data[i];
-                i++;
-                wPos++;
-            }
+            ringBuf.buf[wPos] = data[i];
+            i++;
+            wPos++;
         }
     }
     else
     {
-        if (len > space)
-        {
-            return 0;
-        }
-
         i = 0;
         while (i < len)
         {
@@ -107,14 +89,22 @@ size_t v_RingBuf_pop(uint8_t *data, size_t len)
         return 0;
     }
 
-    if (wPos >= rPos)
+    if (len > ringBuf.amount)
     {
-        if (len > ringBuf.amount)
+        return 0;
+    }
+
+    if ((rPos + len) > RING_BUF_SIZE)
+    {
+        i = 0;
+        while (rPos < RING_BUF_SIZE)
         {
-            return 0;
+            data[i] = ringBuf.buf[rPos];
+            i++;
+            rPos++;
         }
 
-        i = 0;
+        rPos = 0;
         while (i < len)
         {
             data[i] = ringBuf.buf[rPos];
@@ -124,38 +114,12 @@ size_t v_RingBuf_pop(uint8_t *data, size_t len)
     }
     else
     {
-        if (len > ringBuf.amount)
+        i = 0;
+        while (i < len)
         {
-            return 0;
-        }
-
-        if ((rPos + len) > RING_BUF_SIZE)
-        {
-            i = 0;
-            while (rPos < RING_BUF_SIZE)
-            {
-                data[i] = ringBuf.buf[rPos];
-                i++;
-                rPos++;
-            }
-
-            rPos = 0;
-            while (i < len)
-            {
-                data[i] = ringBuf.buf[rPos];
-                i++;
-                rPos++;
-            }
-        }
-        else
-        {
-            i = 0;
-            while (i < len)
-            {
-                data[i] = ringBuf.buf[rPos];
-                i++;
-                rPos++;
-            }
+            data[i] = ringBuf.buf[rPos];
+            i++;
+            rPos++;
         }
     }
 
